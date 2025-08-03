@@ -11,9 +11,14 @@ variables:
   TF_WORKING_DIR: './'
 
 steps:
-- task: UseTerraform@0
-  inputs:
-    version: '$(TF_VERSION)'
+- script: |
+    sudo apt-get update
+    sudo apt-get install -y wget unzip
+    wget https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip
+    unzip terraform_${TF_VERSION}_linux_amd64.zip
+    sudo mv terraform /usr/local/bin/
+    terraform -version
+  displayName: 'Install Terraform CLI'
 
 - script: |
     cd $(TF_WORKING_DIR)
